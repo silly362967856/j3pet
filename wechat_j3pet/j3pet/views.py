@@ -101,6 +101,7 @@ def response_content():
 			time_left_minutes_string = str(int(((close_next_time_format-present_time_format).seconds%3600)/60)).zfill(2)
         		time_left = str(time_left_hours_string)+ ":"+ str(time_left_minutes_string)
 			status_code = 100000
+			order_num = status_code - time_left_hours_num * 60 - time_left_minutes_num
     		elif present_time > close_next_time and present_time < far_next_time:
         		status = u"已进"
 #        		time_left_minutes = int(((present_time_format-close_next_time_format).seconds)/60)
@@ -111,12 +112,15 @@ def response_content():
 			time_left_minutes_string = str(int(((present_time_format-close_next_time_format).seconds%3600)/60)).zfill(2)
         		time_left = str(time_left_hours_string)+":" + str(time_left_minutes_string)
 			status_code = 500000
+			order_num = status_code + time_left_hours_num * 60 + time_left_minutes_num
     		else:
         		status = u"失联"
         		time_left = "00:00"
 			status_code = -500000
+			order_num = status_code
     		partial_result = pet_name+"("+last_time+")"+status+"("+time_left+")"+"\n"
-		order_num = status_code + time_left_hours_num * 60 + time_left_minutes_num
+#		order_num = status_code + time_left_hours_num * 60 + time_left_minutes_num
+		order_num = order_num + float(pet_id_serendipities/50)
 		partial_result_dict[order_num]=partial_result
 #    		result += partial_result
 	partial_result_dict_order = sorted(partial_result_dict.keys(),reverse=True)
